@@ -2,8 +2,13 @@
 
 const request = require('supertest');
 const server = require('./server');
+const db = require('../data/dbConfig');
 
 describe('Server', () => {
+  beforeEach(async () => {
+    await db('games').truncate();
+  });
+
   describe('GET testing', () => {
     it('should return status code 200', async () => {
       const res = await request(server).get('/games');
@@ -21,13 +26,9 @@ describe('Server', () => {
   });
   describe('POST Testing', () => {
     it('should return status 422 if incomplete object is sent', async () => {
-      const incompleteObj = {
-        //missing genre which is required
-        title: 'mario kart',
-      };
       const res = await request(server)
         .post('/games')
-        .send(incompleteObj);
+        .send({ title: 'Mario Kart' });
       expect(res.status).toBe(422);
     });
     it('should return status 202', async () => {
