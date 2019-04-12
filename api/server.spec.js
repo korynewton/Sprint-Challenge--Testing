@@ -53,11 +53,9 @@ describe('Server', () => {
         .post('/games')
         .send(completeObj);
 
-      expect(res.body).toEqual({
-        title: 'Halo',
-        genre: '1st person shooter',
-        releaseYear: 2001,
-      });
+      expect(res.body.title).toBe('Halo');
+      expect(res.body.genre).toBe('1st person shooter');
+      expect(res.body.releaseYear).toBe('2001');
     });
   });
 });
