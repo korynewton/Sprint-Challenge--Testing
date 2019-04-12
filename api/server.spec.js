@@ -19,5 +19,44 @@ describe('Server', () => {
       expect(res.type).toBe('application/json');
     });
   });
-  describe('POST Testing', () => {});
+  describe('POST Testing', () => {
+    it('should return status 422 if incomplete object is sent', async () => {
+      const incompleteObj = {
+        //missing genre which is required
+        title: 'mario kart',
+      };
+      const res = await request(server)
+        .post('/games')
+        .send(incompleteObj);
+      expect(res.status).toBe(422);
+    });
+    it('should return status 202', async () => {
+      const completeObj = {
+        title: 'Pacman',
+        genre: 'Arcade',
+        releaseYear: 1980,
+      };
+      const res = await request(server)
+        .post('/games')
+        .send(completeObj);
+
+      expect(res.status).toBe(202);
+    });
+    it('should return obj that was added', async () => {
+      const completeObj = {
+        title: 'Halo',
+        genre: '1st person shooter',
+        releaseYear: 2001,
+      };
+      const res = await request(server)
+        .post('/games')
+        .send(completeObj);
+
+      expect(res.body).toEqual({
+        title: 'Halo',
+        genre: '1st person shooter',
+        releaseYear: 2001,
+      });
+    });
+  });
 });
