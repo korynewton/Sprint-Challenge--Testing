@@ -14,12 +14,20 @@ describe('Games model testing', () => {
 
     expect(games).toHaveLength(2);
   });
-
+  
   it('should insert the correct game', () => {
       let game = await Games.inser({ title:'Super Smash Bros', genre:"fighting" })
       expect(game.title).toBe('Super Smash Bros');
       
       game = await Games.insert({ title:'Fifa', genre:'Sports' })
       expect(game.title).toBe('Fifa')
-  });
+    });
+    it('getAll test', async () => {
+      await Games.insert({ title: 'Call of Duty', genre: '1st person shooter' });
+      await Games.insert({ title: 'Starfox', genre: 'N64 Classic' });
+  
+      const games = await Games.getAll();
+  
+      expect(games).toHaveLength(2);
+    });
 });
